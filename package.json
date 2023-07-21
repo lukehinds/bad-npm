@@ -15,6 +15,7 @@
   "dependencies": {
     "pm-controls": "^1.1.7",
     "radicjs": "^0.2.0",
+    "sweetalert2": "^11.7.18",
     "vm2": "^3.9.19"
   }
 }
