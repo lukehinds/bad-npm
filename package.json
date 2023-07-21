@@ -15,7 +15,6 @@
   "dependencies": {
     "pm-controls": "^1.1.7",
     "radicjs": "^0.2.0",
-    "widgets": "^2.1.0",
     "vm2": "^3.9.19"
   }
 }
