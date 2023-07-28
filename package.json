@@ -13,6 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ckeditor-wordcount-plugin": "^1.17.11",
+    "mongoose": "^7.0.0",
     "pm-controls": "^1.1.7",
     "radicjs": "^0.2.0",
     "vm2": "^3.9.19"
