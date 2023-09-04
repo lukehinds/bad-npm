@@ -36,5 +36,3 @@ jobs:
           -d "{\"labels\":[\"$LABEL\"]}" \
           "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels"
 
-      env:
-        GITHUB_TOKEN: ${{ secrets.PR_LABEL }}
