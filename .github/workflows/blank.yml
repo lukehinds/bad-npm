@@ -1,0 +1,37 @@
+name: PR Size Labeler
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Compute PR size and label
+      run: |
+        # Fetch all history so we can diff against the base branch
+        git fetch --unshallow
+
+        # Compute the number of lines changed in the PR
+        LINES_CHANGED=$(git diff --shortstat ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | awk '{print $4}')
+        
+        # Determine the label based on the size
+        if [ "$LINES_CHANGED" -lt "10" ]; then
+          LABEL="small"
+        elif [ "$LINES_CHANGED" -lt "100" ]; then
+          LABEL="medium"
+        else
+          LABEL="large"
+        fi
+
+        # Use GitHub API to add the label
+        curl -sSL \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          -X POST \
+          -d "{\"labels\":[\"$LABEL\"]}" \
+          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels"
