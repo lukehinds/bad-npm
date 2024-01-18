@@ -3,18 +3,12 @@ name: Workflow with Data Point Capture
 on: [push]
 
 jobs:
-  capture-and-audit:
+  example_job:
     runs-on: ubuntu-latest
-    outputs:
-      trigger_event: ${{ github.event_name }}
-      job_name: "capture-and-audit"
-
     steps:
-    - name: Step 1 - Perform Actions
-      run: |
-        echo "somthing"
+      - name: Echo workflow details
+        run: |
+          echo "Workflow triggered by event: ${{ github.event_name }}"
+          echo "Current job name: ${{ github.job }}"
+        shell: /usr/bin/bash -e {0}
 
-    - name: Capture and Audit Step
-      run: |
-        echo "Workflow triggered by event: ${{ needs.capture-and-audit.outputs.trigger_event }}"
-        echo "Current job name: ${{ needs.capture-and-audit.outputs.job_name }}"
