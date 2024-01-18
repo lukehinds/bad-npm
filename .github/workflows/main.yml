@@ -17,4 +17,15 @@ jobs:
     - name: Capture and Audit Step
       run: |
         echo "Workflow triggered by event: ${{ needs.capture-and-audit.outputs.trigger_event }}"
-        echo "Current job name: ${{ needs.capture-and-audit.outputs.job_name }}"
+        echo "Current job name: ${{ github.job }}"
+        echo "Workflow name: ${{ github.workflow }}"
+        echo "Run ID: ${{ github.run_id }}"
+        echo "Run number: ${{ github.run_number }}"
+        echo "Actor: ${{ github.actor }}"
+        echo "Repository name: ${{ github.repository }}"
+        echo "Repository owner: ${{ github.repository_owner }}"
+        echo "SHA of the commit: ${{ github.sha }}"
+        echo "Ref of the commit: ${{ github.ref }}"
+        echo "Head Ref: ${{ github.head_ref }}"
+        echo "Base Ref: ${{ github.base_ref }}"
+        echo "Event Path: ${{ github.event_path }}"
