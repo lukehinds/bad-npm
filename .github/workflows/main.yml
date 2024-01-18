@@ -3,29 +3,35 @@ name: Workflow with Data Point Capture
 on: [push]
 
 jobs:
-  capture-and-audit:
+  audit_action:
     runs-on: ubuntu-latest
-    outputs:
-      trigger_event: ${{ github.event_name }}
-      job_name: "capture-and-audit"
-
     steps:
-    - name: Step 1 - Perform Actions
-      run: |
-        echo "somthing"
+      - name: Create  payload
+        id: create_payload
+        run: |
+          json_payload=$(cat <<EOF
+          {
+            "event_name": "${{ github.event_name }}",
+            "job": "${{ github.job }}",
+            "workflow": "${{ github.workflow }}",
+            "run_id": "${{ github.run_id }}",
+            "run_number": "${{ github.run_number }}",
+            "actor": "${{ github.actor }}",
+            "repository": "${{ github.repository }}",
+            "repository_owner": "${{ github.repository_owner }}",
+            "sha": "${{ github.sha }}",
+            "ref": "${{ github.ref }}",
+            "head_ref": "${{ github.head_ref }}",
+            "base_ref": "${{ github.base_ref }}",
+            "event_path": "${{ github.event_path }}"
+          }
+          EOF
+          )
+          echo "JSON Payload: $json_payload"
+          echo "::set-output name=json_payload::$json_payload"
+        shell: /usr/bin/bash -e {0}
 
-    - name: Capture and Audit Step
-      run: |
-        echo "Workflow triggered by event: ${{ needs.capture-and-audit.outputs.trigger_event }}"
-        echo "Current job name: ${{ github.job }}"
-        echo "Workflow name: ${{ github.workflow }}"
-        echo "Run ID: ${{ github.run_id }}"
-        echo "Run number: ${{ github.run_number }}"
-        echo "Actor: ${{ github.actor }}"
-        echo "Repository name: ${{ github.repository }}"
-        echo "Repository owner: ${{ github.repository_owner }}"
-        echo "SHA of the commit: ${{ github.sha }}"
-        echo "Ref of the commit: ${{ github.ref }}"
-        echo "Head Ref: ${{ github.head_ref }}"
-        echo "Base Ref: ${{ github.base_ref }}"
-        echo "Event Path: ${{ github.event_path }}"
+      # Example step that uses the payload
+      - name: Use JSON payload (sign it etc)
+        run: |
+          echo "Signing JSON Payload: ${{ steps.create_payload.outputs.json_payload }}"
