@@ -3,11 +3,10 @@ name: Workflow with Data Point Capture
 on: [push]
 
 jobs:
-  audit_action:
+  example_job:
     runs-on: ubuntu-latest
     steps:
-      - name: Create  payload
-        id: create_payload
+      - name: Create JSON payload
         run: |
           json_payload=$(cat <<EOF
           {
@@ -28,10 +27,10 @@ jobs:
           EOF
           )
           echo "JSON Payload: $json_payload"
-          echo "::set-output name=json_payload::$json_payload"
+          echo "JSON_PAYLOAD=$json_payload" >> $GITHUB_ENV
         shell: /usr/bin/bash -e {0}
 
       # Example step that uses the payload
-      - name: Use JSON payload (sign it etc)
+      - name: Use JSON payload
         run: |
-          echo "Signing JSON Payload: ${{ steps.create_payload.outputs.json_payload }}"
+          echo "Received JSON Payload: $JSON_PAYLOAD"
