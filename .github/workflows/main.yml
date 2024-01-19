@@ -7,27 +7,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create JSON payload
+        id: create_payload
         run: |
-          json_payload=$(jq -n \
-            --arg event_name "${{ github.event_name }}" \
-            --arg job "${{ github.job }}" \
-            --arg workflow "${{ github.workflow }}" \
-            --arg run_id "${{ github.run_id }}" \
-            --arg run_number "${{ github.run_number }}" \
-            --arg actor "${{ github.actor }}" \
-            --arg repository "${{ github.repository }}" \
-            --arg repository_owner "${{ github.repository_owner }}" \
-            --arg sha "${{ github.sha }}" \
-            --arg ref "${{ github.ref }}" \
-            --arg head_ref "${{ github.head_ref }}" \
-            --arg base_ref "${{ github.base_ref }}" \
-            --arg event_path "${{ github.event_path }}" \
-            '{event_name: $event_name, job: $job, workflow: $workflow, run_id: $run_id, run_number: $run_number, actor: $actor, repository: $repository, repository_owner: $repository_owner, sha: $sha, ref: $ref, head_ref: $head_ref, base_ref: $base_ref, event_path: $event_path}')
+          json_payload=$(cat <<EOF
+          {
+            "event_name": "${{ github.event_name }}",
+            "job": "${{ github.job }}",
+            "workflow": "${{ github.workflow }}",
+            "run_id": "${{ github.run_id }}",
+            "run_number": "${{ github.run_number }}",
+            "actor": "${{ github.actor }}",
+            "repository": "${{ github.repository }}",
+            "repository_owner": "${{ github.repository_owner }}",
+            "sha": "${{ github.sha }}",
+            "ref": "${{ github.ref }}",
+            "head_ref": "${{ github.head_ref }}",
+            "base_ref": "${{ github.base_ref }}",
+            "event_path": "${{ github.event_path }}"
+          }
+          EOF
+          )
           echo "JSON Payload: $json_payload"
-          echo "JSON_PAYLOAD=$json_payload" >> $GITHUB_ENV
+          echo "::set-output name=json_payload::$json_payload"
         shell: /usr/bin/bash -e {0}
 
       # Example step that uses the payload
       - name: Use JSON payload
         run: |
-          echo "Received JSON Payload: $JSON_PAYLOAD"
+          echo "Signing JSON Payload: ${{ steps.create_payload.outputs.json_payload }}"
