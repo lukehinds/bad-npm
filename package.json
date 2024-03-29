@@ -13,8 +13,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.8",
+    "express": "^4.19.2",
     "pm-controls": "^1.1.7",
     "radicjs": "^0.2.0",
+    "react-router-dom": "^6.22.3",
     "vm2": "^3.9.19"
   }
 }
