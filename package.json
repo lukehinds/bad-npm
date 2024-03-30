@@ -13,8 +13,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bugsnag": "^2.4.3",
     "pm-controls": "^1.1.7",
     "radicjs": "^0.2.0",
+    "requests": "^0.3.0",
     "vm2": "^3.9.19"
   }
 }
